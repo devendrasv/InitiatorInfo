@@ -1,0 +1,131 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="RequestorInfo.ListWorkflow.Workflow" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="RequestorInfo.ListWorkflow.Workflow_1"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdad="clr-namespace:Microsoft.SharePoint.DesignTime.Activities.Design;assembly=Microsoft.SharePoint.DesignTime.Activities.16.0.Design"
+ xmlns:p="http://schemas.microsoft.com/workflow/2012/07/xaml/activities"
+ xmlns:p1="wf://workflow.windows.net/$Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Microsoft.Activities</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>RequestorInfo</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Initiator Info " sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="Initiator" />
+      <Variable x:TypeArguments="x:Int32" Name="InitiatorId" />
+      <Variable x:TypeArguments="p:DynamicValue" Name="InitiatorProperties" />
+      <Variable x:TypeArguments="x:String" Name="Initiatoremail" />
+    </Sequence.Variables>
+    <p1:LookupWorkflowContextProperty sap2010:WorkflowViewState.IdRef="LookupWorkflowContextProperty_1" PropertyName="InitiatorUserId">
+      <p1:LookupWorkflowContextProperty.Result>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">Initiator</mca:CSharpReference>
+        </OutArgument>
+      </p1:LookupWorkflowContextProperty.Result>
+    </p1:LookupWorkflowContextProperty>
+    <p1:LookupSPPrincipalId AddToUserInfoList="{x:Null}" sap2010:WorkflowViewState.IdRef="LookupSPPrincipalId_1">
+      <p1:LookupSPPrincipalId.Result>
+        <OutArgument x:TypeArguments="x:Int32">
+          <mca:CSharpReference x:TypeArguments="x:Int32">InitiatorId</mca:CSharpReference>
+        </OutArgument>
+      </p1:LookupSPPrincipalId.Result>
+      <p1:LookupSPPrincipalId.UserName>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">Initiator</mca:CSharpValue>
+        </InArgument>
+      </p1:LookupSPPrincipalId.UserName>
+    </p1:LookupSPPrincipalId>
+    <p1:LookupSPUser sap2010:WorkflowViewState.IdRef="LookupSPUser_1">
+      <p1:LookupSPUser.PrincipalId>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">InitiatorId</mca:CSharpValue>
+        </InArgument>
+      </p1:LookupSPUser.PrincipalId>
+      <p1:LookupSPUser.Result>
+        <OutArgument x:TypeArguments="p:DynamicValue">
+          <mca:CSharpReference x:TypeArguments="p:DynamicValue">InitiatorProperties</mca:CSharpReference>
+        </OutArgument>
+      </p1:LookupSPUser.Result>
+    </p1:LookupSPUser>
+    <p:GetODataProperties DisplayName="GetDynamicValueProperties" sap2010:WorkflowViewState.IdRef="GetODataProperties_1">
+      <p:GetODataProperties.Source>
+        <InArgument x:TypeArguments="p:DynamicValue">
+          <mca:CSharpValue x:TypeArguments="p:DynamicValue">InitiatorProperties</mca:CSharpValue>
+        </InArgument>
+      </p:GetODataProperties.Source>
+      <scg:Dictionary x:TypeArguments="x:String, OutArgument">
+        <OutArgument x:TypeArguments="x:String" x:Key="Email">
+          <mca:CSharpReference x:TypeArguments="x:String">Initiatoremail</mca:CSharpReference>
+        </OutArgument>
+      </scg:Dictionary>
+    </p:GetODataProperties>
+    <p1:WriteToHistory sap2010:WorkflowViewState.IdRef="WriteToHistory_3">
+      <p1:WriteToHistory.Message>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">"Initiator Email address " + Initiatoremail.ToString()</mca:CSharpValue>
+        </InArgument>
+      </p1:WriteToHistory.Message>
+    </p1:WriteToHistory>
+    <sads:DebugSymbol.Symbol>d3NDOlxVc2Vyc1xBZG1pbmlzdHJhdG9yXERvY3VtZW50c1xWaXN1YWwgU3R1ZGlvIDIwMTNcUHJvamVjdHNcSW5pdGlhdG9ySW5mb1xJbml0aWF0b3JJbmZvXExpc3RXb3JrZmxvd1xXb3JrZmxvdy54YW1sDykDYw4CAQEwBTYoAgEpNwVCHgIBHkMFThcCARNPBVocAgEIWwVhGQIBAjMLM1oCASswdjCHAQIBKj8LP1ICASQ6CzpbAgEfRgtGUwIBGUsLS2oCARRXC1dfAgEOUgtSYgIBCV4LXn8CAQM=</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LookupWorkflowContextProperty_1" sap:VirtualizedContainerService.HintSize="247,68">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <scg:Dictionary x:TypeArguments="x:String, msdad:ViewStateNameValue" x:Key="SPLocalizedDisplayNames">
+              <msdad:ViewStateNameValue x:Key="PropertyName" DisplayName="Initiator" Value="InitiatorUserId" />
+            </scg:Dictionary>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LookupSPPrincipalId_1" sap:VirtualizedContainerService.HintSize="247,68" />
+      <sap2010:ViewStateData Id="LookupSPUser_1" sap:VirtualizedContainerService.HintSize="247,89" />
+      <sap2010:ViewStateData Id="GetODataProperties_1" sap:VirtualizedContainerService.HintSize="247,92">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:String x:Key="Properties.SelectedEntityType">SharePoint_User</x:String>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WriteToHistory_3" sap:VirtualizedContainerService.HintSize="247,68" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="269,669">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="RequestorInfo.ListWorkflow.Workflow_1" sap:VirtualizedContainerService.HintSize="309,749" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
